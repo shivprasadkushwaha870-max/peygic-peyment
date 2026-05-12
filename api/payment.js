@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   
   const PAYGIC_MID = 'MINDREADIN';
-  const PAYGIC_PASSWORD = '6&nDDjc#ee#s';
+  const PAYGIC_PASSWORD = 'abcde@864';
 
   try {
     const { amount, customer_name, customer_email, customer_mobile } = req.body;
