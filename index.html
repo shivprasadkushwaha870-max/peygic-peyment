@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PayGic Payment</title>
+    <title>Course Payment - ₹499</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -24,8 +24,19 @@
             width: 100%;
             text-align: center;
         }
-        h1 { color: #667eea; margin-bottom: 10px; font-size: 28px; }
-        p.subtitle { color: #666; margin-bottom: 25px; }
+        h1 { color: #667eea; margin-bottom: 5px; font-size: 26px; }
+        h2 { color: #333; margin-bottom: 10px; font-size: 20px; }
+        p.subtitle { color: #666; margin-bottom: 20px; }
+        .price-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+        .price-label { font-size: 14px; opacity: 0.9; }
+        .price-amount { font-size: 48px; font-weight: 700; margin: 5px 0; }
+        .price-currency { font-size: 20px; }
         .status-box {
             padding: 15px;
             border-radius: 10px;
@@ -42,14 +53,14 @@
             padding: 15px;
             border: none;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
             margin-bottom: 15px;
         }
-        .pay-btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-        .pay-btn:hover { opacity: 0.9; }
+        .pay-btn { background: #28a745; color: white; }
+        .pay-btn:hover { background: #218838; }
         .form-group { margin-bottom: 15px; text-align: left; }
         label { display: block; margin-bottom: 5px; color: #333; font-weight: 600; font-size: 14px; }
         input {
@@ -71,21 +82,36 @@
             display: none;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #successSection { display: none; }
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+            color: #666;
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔒 PayGic Payment</h1>
-        <p class="subtitle">Secure UPI Payment Gateway</p>
+        <h1>🎓 The Super Mind</h1>
+        <h2>Course Enrollment</h2>
+        <p class="subtitle">Complete your payment to get instant access</p>
+        
+        <div class="price-box">
+            <div class="price-label">Total Amount</div>
+            <div class="price-amount"><span class="price-currency">₹</span>499</div>
+            <div class="price-label">One-time payment</div>
+        </div>
         
         <div id="statusBox" class="status-box"></div>
         <div class="spinner" id="spinner"></div>
         
         <div id="paymentForm">
             <div class="form-group">
-                <label>Customer Name</label>
-                <input type="text" id="name" placeholder="Enter name">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name">
             </div>
             <div class="form-group">
                 <label>Email</label>
@@ -93,25 +119,18 @@
             </div>
             <div class="form-group">
                 <label>Mobile Number</label>
-                <input type="tel" id="mobile" placeholder="10 digit mobile" maxlength="10">
+                <input type="tel" id="mobile" placeholder="10 digit mobile number" maxlength="10">
             </div>
-            <div class="form-group">
-                <label>Amount (₹)</label>
-                <input type="number" id="amount" placeholder="Enter amount" min="1">
-            </div>
-            <button class="pay-btn" onclick="initiatePayment()">Pay Now</button>
+            <button class="pay-btn" onclick="initiatePayment()">Pay ₹499 Now</button>
         </div>
         
-        <div id="successSection">
-            <h3>✅ Payment Initiated!</h3>
-            <p>Complete payment on the next page.</p>
-            <button class="pay-btn" onclick="checkStatus()" style="margin-top: 15px;">Check Status</button>
+        <div class="secure-badge">
+            <span>🔒</span>
+            <span>Secured by PayGic UPI</span>
         </div>
     </div>
 
     <script>
-        let currentOrderId = '';
-
         function showStatus(msg, type) {
             const box = document.getElementById('statusBox');
             box.textContent = msg;
@@ -126,14 +145,18 @@
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const mobile = document.getElementById('mobile').value;
-            const amount = document.getElementById('amount').value;
             
-            if (!name || !email || !mobile || !amount) {
+            if (!name || !email || !mobile) {
                 showStatus('Please fill all fields', 'error');
                 return;
             }
             
-            showStatus('Creating payment...', 'detecting');
+            if (mobile.length !== 10) {
+                showStatus('Please enter valid 10-digit mobile number', 'error');
+                return;
+            }
+            
+            showStatus('Creating secure payment...', 'detecting');
             showSpinner(true);
             
             try {
@@ -141,7 +164,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
-                        amount: amount, 
+                        amount: '499', 
                         customer_name: name, 
                         customer_email: email, 
                         customer_mobile: mobile 
@@ -161,50 +184,6 @@
                 showSpinner(false);
             }
         }
-
-        async function checkStatus() {
-            if (!currentOrderId) {
-                const urlParams = new URLSearchParams(window.location.search);
-                currentOrderId = urlParams.get('orderId');
-            }
-            
-            if (!currentOrderId) {
-                showStatus('No order ID found', 'error');
-                return;
-            }
-            
-            showStatus('Checking status...', 'detecting');
-            showSpinner(true);
-            
-            try {
-                const res = await fetch('/api/status', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ orderId: currentOrderId })
-                });
-                
-                const data = await res.json();
-                showStatus('Status: ' + (data.txnStatus || 'UNKNOWN'), 
-                    data.txnStatus === 'SUCCESS' ? 'success' : 'detecting');
-            } catch (e) {
-                showStatus('Error checking status', 'error');
-            } finally {
-                showSpinner(false);
-            }
-        }
-
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const orderId = urlParams.get('orderId');
-            const status = urlParams.get('status');
-            
-            if (orderId && status === 'success') {
-                currentOrderId = orderId;
-                document.getElementById('paymentForm').style.display = 'none';
-                document.getElementById('successSection').style.display = 'block';
-                showStatus('Payment completed! Order: ' + orderId, 'success');
-            }
-        };
     </script>
 </body>
 </html>
