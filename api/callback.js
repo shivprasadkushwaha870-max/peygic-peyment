@@ -1,6 +1,7 @@
 export default async function handler(req, res) {
-  const { orderId, txn_id } = req.query;
+  const { orderId } = req.query;
   
-  // Redirect to success page with order details
-  res.redirect(`/success.html?orderId=${orderId}&txnId=${txn_id || ''}`);
+  // Redirect to thank you page
+  res.setHeader('Location', `/thankyou.html?orderId=${orderId || ''}`);
+  res.status(302).end();
 }
