@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     
     const token = tokenData.data.token;
 
-    // Step 2: Create Payment Page - FIXED ₹499
+    // Step 2: Create Payment Page - FIXED ₹4
     const callbackUrl = `https://peygic-payment.vercel.app/thankyou.html?orderId=${orderId}`;
     
     const payRes = await fetch('https://server.paygic.in/api/v2/createPaymentPage', {
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         mid: 'MINDREADIN',
         merchantReferenceId: orderId,
-        amount: '499.00',
+        amount: '4.00',
         customer_mobile: customer_mobile,
         customer_name: customer_name,
         customer_email: customer_email,
