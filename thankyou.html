@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Thank You!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #d4edda;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+        }
+        h1 { color: #155724; margin-bottom: 10px; font-size: 28px; }
+        p { color: #666; margin-bottom: 20px; font-size: 16px; line-height: 1.6; }
+        .order-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+        .order-label { font-size: 12px; color: #666; text-transform: uppercase; }
+        .order-id { font-size: 16px; font-weight: 600; color: #333; word-break: break-all; }
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        .course-info {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .course-info h3 { color: #333; margin-bottom: 10px; }
+        .course-info ul {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+        }
+        .course-info li {
+            padding: 8px 0;
+            color: #555;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .course-info li:before {
+            content: "✅ ";
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">✓</div>
+        <h1>Payment Successful!</h1>
+        <p>Thank you for enrolling in <strong>The Super Mind</strong> course. Your payment of <strong>₹499</strong> has been received.</p>
+        
+        <div class="order-box">
+            <div class="order-label">Order ID</div>
+            <div class="order-id" id="orderId">Loading...</div>
+        </div>
+        
+        <p>You will receive access details via email shortly.</p>
+        
+        <a href="/" class="btn">Back to Home</a>
+        
+        <div class="course-info">
+            <h3>🎓 What's Next?</h3>
+            <ul>
+                <li>Check your email for login credentials</li>
+                <li>Access your course dashboard</li>
+                <li>Start learning immediately</li>
+                <li>Download course materials</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Get order ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('orderId') || 'N/A';
+        document.getElementById('orderId').textContent = orderId;
+    </script>
+</body>
+</html>
