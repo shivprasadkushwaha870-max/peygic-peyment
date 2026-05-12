@@ -4,33 +4,40 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   
   if (req.method === 'OPTIONS') return res.status(200).end();
-  
-  const PAYGIC_MID = 'MINDREADIN';
-  const PAYGIC_PASSWORD = 'abcde@864';
 
   try {
     const { orderId } = req.body;
-    
-    const tokenRes = await fetch('https://server.paygic.in/api/v2/reseller/createResellerAuthToken', {
+
+    // Get Token
+    const tokenRes = await fetch('https://server.paygic.in/api/v3/createMerchantToken', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ rid: PAYGIC_MID, password: PAYGIC_PASSWORD }),
-    });
-    const tokenData = await tokenRes.json();
-    const token = tokenData.data?.token;
-    
-    const statusRes = await fetch('https://server.paygic.in/api/v2/reseller/checkPaymentStatus', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'token': token },
-      body: JSON.stringify({ 
-        rid: PAYGIC_MID, 
-        mid: PAYGIC_MID, 
-        merchantReferenceId: orderId 
+      body: JSON.stringify({
+        mid: 'MINDREADIN',
+        password: 'abcde@864',
+        expiry: false
       }),
     });
     
+    const tokenData = await tokenRes.json();
+    const token = tokenData.data?.token;
+
+    // Check Status
+    const statusRes = await fetch('https://server.paygic.in/api/v2/checkPaymentStatus', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'token': token
+      },
+      body: JSON.stringify({
+        mid: 'MINDREADIN',
+        merchantReferenceId: orderId,
+      }),
+    });
+
     const statusData = await statusRes.json();
     res.json(statusData);
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
