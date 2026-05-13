@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     <p>Email: ${email}</p>
     <p>Name: ${name}</p>
     <script>
-      window.location.href = "https://thesupermind.online/tq";
+      window.location.href = "https://thesupermind.online/tq/";
     </script>
   `);
 
