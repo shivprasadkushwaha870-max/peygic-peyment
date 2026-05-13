@@ -1,38 +1,82 @@
 export default async function handler(req, res) {
-  const { orderId, email } = req.query;
-  
-  // ===== EMAIL BHEJNE KA CODE =====
-  if (email && email.includes('@')) {
-    try {
-      await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: process.env.FROM_EMAIL || 'onboarding@resend.dev',
-          to: email,
-          subject: '✅ Payment Successful - The Super Mind',
-          html: `<div style="font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px;">
-            <h2 style="color: #667eea;">🎉 Thank You!</h2>
-            <p>Aapka payment successful ho gaya.</p>
-            <div style="background: #f0f4ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
-              <p><strong>Order ID:</strong> ${orderId}</p>
-              <p><strong>Status:</strong> ✅ SUCCESS</p>
-            </div>
-            <p>Aapko jald hi product details milengi!</p>
-            <p style="color: #888; margin-top: 30px;">The Super Mind Team</p>
-          </div>`,
-        }),
-      });
-      console.log('✅ Email sent to:', email);
-    } catch (err) {
-      console.error('❌ Email error:', err);
-    }
+
+  try {
+
+    const { email, name } = req.body;
+
+    // =========================
+    // SEND EMAIL WITH RESEND
+    // =========================
+
+    await fetch("https://api.resend.com/emails", {
+
+      method: "POST",
+
+      headers: {
+
+        "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
+
+        "Content-Type": "application/json"
+
+      },
+
+      body: JSON.stringify({
+
+        from: "onboarding@resend.dev",
+
+        to: email,
+
+        subject: "Payment Successful",
+
+        html: `
+
+          <div style="font-family:Arial;padding:20px">
+
+            <h2>
+              Thank You ${name}
+            </h2>
+
+            <p>
+              Aapka payment successful ho gaya hai.
+            </p>
+
+            <p>
+              Product details aapke email par bhej di gayi hain.
+            </p>
+
+            <h3>
+              Thank You ❤️
+            </h3>
+
+          </div>
+
+        `
+
+      })
+
+    });
+
+    // =========================
+    // REDIRECT
+    // =========================
+
+    return res.status(200).json({
+
+      success: true,
+
+      redirect:
+        "https://thesupermind.online/tq"
+
+    });
+
+  } catch (error) {
+
+    return res.status(500).json({
+
+      error: error.message
+
+    });
+
   }
-  
-  // ===== THANK YOU PAGE PAR REDIRECT =====
-  res.setHeader('Location', `https://thesupermind.online/tq/?orderId=${orderId || ''}`);
-  res.status(302).end();
+
 }
