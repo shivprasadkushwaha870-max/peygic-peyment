@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   const { orderId, email } = req.query;
   
-  // Email bhejne ka code
+  // ===== EMAIL BHEJNE KA CODE =====
   if (email && email.includes('@')) {
     try {
       await fetch('https://api.resend.com/emails', {
@@ -21,15 +21,18 @@ export default async function handler(req, res) {
               <p><strong>Order ID:</strong> ${orderId}</p>
               <p><strong>Status:</strong> ✅ SUCCESS</p>
             </div>
+            <p>Aapko jald hi product details milengi!</p>
+            <p style="color: #888; margin-top: 30px;">The Super Mind Team</p>
           </div>`,
         }),
       });
+      console.log('✅ Email sent to:', email);
     } catch (err) {
-      console.error('Email error:', err);
+      console.error('❌ Email error:', err);
     }
   }
   
-  // Thank You page par redirect
+  // ===== THANK YOU PAGE PAR REDIRECT =====
   res.setHeader('Location', `https://thesupermind.online/tq/?orderId=${orderId || ''}`);
   res.status(302).end();
 }
