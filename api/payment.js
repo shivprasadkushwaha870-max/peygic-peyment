@@ -9,6 +9,9 @@ export default async function handler(req, res) {
     const { customer_name, customer_email, customer_mobile } = req.body;
     const orderId = `COURSE_${Date.now()}`;
 
+    // Email ko body se lein (jo form se aa raha hai)
+    const customerEmail = customer_email || '';
+
     // Step 1: Get Token
     const tokenRes = await fetch('https://server.paygic.in/api/v3/createMerchantToken', {
       method: 'POST',
@@ -28,9 +31,8 @@ export default async function handler(req, res) {
     
     const token = tokenData.data.token;
 
-    // Step 2: Create Payment Page - FIXED ₹4
-const customerEmail = req.query.email || '';
-const callbackUrl = `https://peygic-payment.vercel.app/api/callback?orderId=${orderId}&email=${encodeURIComponent(customerEmail)}`;
+    // Step 2: Create Payment Page
+    const callbackUrl = `https://peygic-payment.vercel.app/api/callback?orderId=${orderId}&email=${encodeURIComponent(customerEmail)}`;
     
     const payRes = await fetch('https://server.paygic.in/api/v2/createPaymentPage', {
       method: 'POST',
