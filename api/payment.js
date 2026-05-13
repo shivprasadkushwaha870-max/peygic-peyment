@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     const token = tokenData.data.token;
 
     // Step 2: Create Payment Page - FIXED ₹4
-    const callbackUrl = `https://thesupermind.online/tq/?orderId=${orderId};
+    const callbackUrl = https://thesupermind.online/tq/?orderId=${orderId};
     
     const payRes = await fetch('https://server.paygic.in/api/v2/createPaymentPage', {
       method: 'POST',
