@@ -29,7 +29,8 @@ export default async function handler(req, res) {
     const token = tokenData.data.token;
 
     // Step 2: Create Payment Page - FIXED ₹4
-const callbackUrl = `https://peygic-payment.vercel.app/api/callback?orderId=${orderId}&email=${encodeURIComponent(customerEmail)}&product=${product}`;
+const customerEmail = req.query.email || '';
+const callbackUrl = `https://peygic-payment.vercel.app/api/callback?orderId=${orderId}&email=${encodeURIComponent(customerEmail)}`;
     
     const payRes = await fetch('https://server.paygic.in/api/v2/createPaymentPage', {
       method: 'POST',
