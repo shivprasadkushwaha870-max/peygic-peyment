@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
-  const { orderId, email } = req.query;
+  const { orderId, email } = req.query;  // email ko bhi destructure karein
   
-  // ===== EMAIL BHEJNE KA CODE =====
+  // Email bhejne ka code
   if (email && email.includes('@')) {
     try {
       await fetch('https://api.resend.com/emails', {
@@ -14,26 +14,22 @@ export default async function handler(req, res) {
           from: process.env.FROM_EMAIL || 'onboarding@resend.dev',
           to: email,
           subject: '✅ Payment Successful - The Super Mind',
-          html: `
-            <div style="font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px;">
-              <h2 style="color: #667eea;">🎉 Thank You!</h2>
-              <p>Aapka payment successful ho gaya.</p>
-              <div style="background: #f0f4ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
-                <p><strong>Order ID:</strong> ${orderId}</p>
-                <p><strong>Status:</strong> ✅ SUCCESS</p>
-              </div>
-              <p>Aapko jald hi product details milengi!</p>
+          html: `<div style="font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h2 style="color: #667eea;">🎉 Thank You!</h2>
+            <p>Aapka payment successful ho gaya.</p>
+            <div style="background: #f0f4ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+              <p><strong>Order ID:</strong> ${orderId}</p>
+              <p><strong>Status:</strong> ✅ SUCCESS</p>
             </div>
-          `,
+          </div>`,
         }),
       });
-      console.log('✅ Email sent to:', email);
     } catch (err) {
-      console.error('❌ Email error:', err);
+      console.error('Email error:', err);
     }
   }
   
-  // ===== THANK YOU PAGE PAR REDIRECT =====
+  // Thank You page par redirect
   res.setHeader('Location', `https://thesupermind.online/tq/?orderId=${orderId || ''}`);
   res.status(302).end();
 }
