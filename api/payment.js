@@ -29,11 +29,6 @@ export default async function handler(req, res) {
     const token = tokenData.data.token;
 
     // Step 2: Create Payment Page - FIXED ₹4
-    const callbackUrl = `https://thesupermind.online/tq/?orderId=${orderId}`;
-    // Pehle email query se lein
-const customerEmail = req.query.email || '';
-const product = req.query.product || 'default';
-
 const callbackUrl = `https://peygic-payment.vercel.app/api/callback?orderId=${orderId}&email=${encodeURIComponent(customerEmail)}&product=${product}`;
     
     const payRes = await fetch('https://server.paygic.in/api/v2/createPaymentPage', {
