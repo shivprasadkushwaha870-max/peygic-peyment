@@ -1,55 +1,56 @@
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export default async function handler(req, res) {
 
-  try {
+  const email = req.query.email || '';
+  const name = req.query.name || '';
 
-    const email = req.query.email || '';
-    const name = req.query.name || '';
+  const { data, error } = await resend.emails.send({
 
-    const response = await fetch(
-      'https://api.resend.com/emails',
-      {
+    from: 'SuperMind <onboarding@resend.dev>',
 
-        method: 'POST',
+    to: [email],
 
-        headers: {
+    subject: 'Payment Successful',
 
-          'Authorization':
-            `Bearer ${process.env.RESEND_API_KEY}`,
+    html: `
 
-          'Content-Type': 'application/json'
+      <div style="font-family:Arial;padding:20px">
 
-        },
+        <h2>
+          Thank You ${name}
+        </h2>
 
-        body: JSON.stringify({
+        <p>
+          Aapka payment successful ho gaya hai.
+        </p>
 
-          from: 'onboarding@resend.dev',
+        <p>
+          Product details aapke email par bhej di gayi hain.
+        </p>
 
-          to: email,
+        <h3>
+          Thank You ❤️
+        </h3>
 
-          subject: 'Payment Successful',
+      </div>
 
-          html: `
-            <h1>Thank You ${name}</h1>
-            <p>Payment successful.</p>
-          `
+    `,
 
-        })
+  });
 
-      }
-    );
+  if (error) {
 
-    const data = await response.json();
-
-    return res.status(200).json(data);
-
-  } catch (error) {
-
-    return res.status(500).json({
-
-      error: error.message
-
-    });
+    return res.status(400).json(error);
 
   }
+
+  console.log(data);
+
+  return res.redirect(
+    'https://thesupermind.online/tq'
+  );
 
 }
