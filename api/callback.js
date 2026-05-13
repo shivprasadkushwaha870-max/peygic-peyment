@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
   const { data, error } = await resend.emails.send({
 
-    from: 'SuperMind <onboarding@resend.dev>',
+    from: 'SuperMind <onboarding@thesupermind.online>',
 
     to: [email],
 
