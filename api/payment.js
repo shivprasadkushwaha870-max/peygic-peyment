@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         mid: 'MINDREADIN',
-        password: 'abcde@abcde@864',
+        password: 'abcde@864',
         expiry: false
       }),
     });
@@ -28,12 +28,9 @@ export default async function handler(req, res) {
     
     const token = tokenData.data.token;
 
-    // Step 2: Create Payment Page
-    // Email ko body se lein (jo form se aa raha hai)
-    const customerEmail = customer_email || '';
-    
-    // Callback URL - payment ke baad yahan jayega
-    const callbackUrl = `https://peygic-payment.vercel.app/api/callback?orderId=${orderId}&email=${encodeURIComponent(customerEmail)}`;
+    // Step 2: Create Payment Page - FIXED ₹4
+const customerEmail = req.query.email || '';
+const callbackUrl = `https://peygic-payment.vercel.app/api/callback?orderId=${orderId}&email=${encodeURIComponent(customerEmail)}`;
     
     const payRes = await fetch('https://server.paygic.in/api/v2/createPaymentPage', {
       method: 'POST',
