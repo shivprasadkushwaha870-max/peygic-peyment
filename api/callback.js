@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const { orderId, email } = req.query;  // email bhi lein
+  const { orderId, email } = req.query;
   
   // Email bhejne ka code
   if (email && email.includes('@')) {
