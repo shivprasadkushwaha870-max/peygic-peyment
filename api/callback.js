@@ -65,7 +65,7 @@ export default async function handler(req, res) {
       success: true,
 
       redirect:
-        "https://thesupermind.online/tq"
+        "https://thesupermind.online/tq/"
 
     });
 
