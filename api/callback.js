@@ -73,7 +73,7 @@ shivprasadkushwaha870@gmail.com`
   console.log(data);
 
   return res.redirect(
-    'https://thankyou.html'
+    'https://peygic-peyment.vercel.app/thankyou.html'
   );
 
 }
