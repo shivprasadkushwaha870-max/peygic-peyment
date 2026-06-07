@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     
     const token = tokenData.data.token;
 
-    // Step 2: Create Payment Page - FIXED ₹699
+    // Step 2: Create Payment Page - FIXED ₹499
 const callbackUrl =
 `https://peygic-peyment.vercel.app/api/callback/?orderId=${orderId}&email=${encodeURIComponent(customer_email)}&name=${encodeURIComponent(customer_name)}`;
     
@@ -41,7 +41,7 @@ const callbackUrl =
       body: JSON.stringify({
         mid: 'MINDREADIN',
         merchantReferenceId: orderId,
-        amount: '699.00',
+        amount: '499.00',
         customer_mobile: customer_mobile,
         customer_name: customer_name,
         customer_email: customer_email,
